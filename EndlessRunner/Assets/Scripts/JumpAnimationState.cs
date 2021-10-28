@@ -6,6 +6,8 @@ public static class PlayerAnimationConstants
 {
     public const string JumpMultiplier = "JumpMultiplier";
     public const string IsJumping = "isJumping";
+    public const string PlayerEnable = "playerEnable";
+    public const string StartRun = "startRun";
 }
 
 public class JumpAnimationState : StateMachineBehaviour
