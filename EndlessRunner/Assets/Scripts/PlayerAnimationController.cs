@@ -16,11 +16,12 @@ public class PlayerAnimationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && !player.IsDead)
         {
             player.enabled = true;
             animator.SetBool(PlayerAnimationConstants.PlayerEnable, true);
         }
         animator.SetBool(PlayerAnimationConstants.IsJumping, player.IsJumping);
+        animator.SetBool(PlayerAnimationConstants.IsRolling,player.IsRolling);
     }
 }

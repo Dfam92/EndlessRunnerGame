@@ -2,14 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class PlayerAnimationConstants
-{
-    public const string JumpMultiplier = "JumpMultiplier";
-    public const string IsJumping = "isJumping";
-    public const string PlayerEnable = "playerEnable";
-    public const string StartRun = "startRun";
-}
-
 public class JumpAnimationState : StateMachineBehaviour
 {
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -23,8 +15,8 @@ public class JumpAnimationState : StateMachineBehaviour
             // olha a duracao do pulo do gameplay
             PlayerController player = animator.transform.parent.GetComponent<PlayerController>();
             //setar o JumpMultiplier para que a duracao final da animacao de pulo seja = a duracao do pulo no game
-            float multiplier = jumpClipInfo.clip.length / player.JumpDuration;
-            animator.SetFloat(PlayerAnimationConstants.JumpMultiplier,multiplier);
+            float jumpMultiplier = jumpClipInfo.clip.length / player.JumpDuration;
+            animator.SetFloat(PlayerAnimationConstants.JumpMultiplier,jumpMultiplier);
         }
 
     }

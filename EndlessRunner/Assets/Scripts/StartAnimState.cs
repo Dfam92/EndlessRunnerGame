@@ -12,5 +12,6 @@ public class StartAnimState : StateMachineBehaviour
         animator.SetBool(PlayerAnimationConstants.StartRun, true);
     }
 
+
     
 }
