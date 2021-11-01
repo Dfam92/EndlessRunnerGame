@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float jumpDistanceZ = 5;
     [SerializeField] private float jumpHeightY = 2;
+    [SerializeField] private float jumpLerpSpeed = 10;
     bool isJumping;
     float jumpStartZ;
 
@@ -22,8 +23,8 @@ public class PlayerController : MonoBehaviour
     [Header("Roll")]
 
     [SerializeField] private float rollDistanceZ;
-    [SerializeField] private Collider rollCollider;
-    [SerializeField] private Collider normalCollider;
+    [SerializeField] private GameObject rollCollider;
+    [SerializeField] private GameObject normalCollider;
     private bool isRolling;
     private float rollStartZ;
 
@@ -39,29 +40,33 @@ public class PlayerController : MonoBehaviour
     public bool IsDead { get => isDead; set => isDead = value; }
     public bool IsRolling { get => isRolling; private set => isRolling = value; }
 
-    private bool CanJump => !IsJumping && !IsRolling;
-    private bool CanRoll => !IsJumping && !IsRolling;
+    private bool CanJump => !IsJumping;
+    private bool CanRoll => !IsRolling;
 
     private void Awake()
     {
         initialPos = transform.position;
-        //StopRoll();
+        StopRoll();
     }
     // Update is called once per frame
     void Update()
     {
+
         PlayerMovement();
         PlayerJump();
         PlayerRoll();
         ProcessRoll();
+        GameOver();
     }
 
     private void PlayerMovement()
     {
+
         var targetPosition = transform.position;
         targetPosition.x = Mathf.Lerp(transform.position.x, targetPosX, Time.deltaTime * speedTurn);
         targetPosition += Vector3.forward * speedForward * Time.deltaTime;
         targetPosition.y = ProcessJump();
+
 
         if (Input.GetKeyDown(KeyCode.A) && targetPosX != -limitBound.x)
         {
@@ -78,7 +83,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.W) && CanJump)
         {
-            IsJumping = true;
+            StartJump();
         }
     }
 
@@ -86,17 +91,35 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.S) && CanRoll)
         {
-            IsRolling = true;
-            rollStartZ = transform.position.z;
-            normalCollider.enabled = false;
-            rollCollider.enabled = true;
+            StartRoll();
         }
+    }
+
+    private void StartRoll()
+    {
+        IsRolling = true;
+        rollStartZ = transform.position.z;
+        normalCollider.SetActive(false);
+        rollCollider.SetActive(true);
+        StopJump();
     }
     private void StopRoll()
     {
         IsRolling = false;
-        normalCollider.enabled = true;
-        rollCollider.enabled = false;
+        normalCollider.SetActive(true);
+        rollCollider.SetActive(false);
+    }
+
+    private void StartJump()
+    {
+        IsJumping = true;
+        jumpStartZ = transform.position.z;
+        StopRoll();
+    }
+
+    private void StopJump()
+    {
+        IsJumping = false;
     }
 
     private void ProcessRoll()
@@ -120,14 +143,27 @@ public class PlayerController : MonoBehaviour
             float jumpPercent = jumpCurrentProgress / jumpDistanceZ;
             if (jumpPercent >= 1)
             {
-                IsJumping = false;
+                StopJump();
             }
             else
             {
                 deltaY = Mathf.Sin(Mathf.PI * jumpPercent)*jumpHeightY;
             }
         }
-        return initialPos.y + deltaY;
+        float targetPositionY = initialPos.y + deltaY;
+        return Mathf.Lerp(transform.position.y, targetPositionY, Time.deltaTime * jumpLerpSpeed);
     }
    
+    private void GameOver()
+    {
+        if(isDead)
+        {
+
+            StopJump();
+            StopRoll();
+            speedForward = 0;
+            speedTurn = 0;
+        }
+        
+    }
 }
