@@ -278,6 +278,15 @@ MonoBehaviour:
   - {fileID: 8137918194433898975, guid: 2f986c81af5082041b6d44be9863f876, type: 3}
   - {fileID: 2528481713416324001, guid: 4e4b50d1f93be744b9bbe1af33973313, type: 3}
   - {fileID: -171539184736728836, guid: 66fc3d83fedd1164a8d3af0f37f04d49, type: 3}
+  player: {fileID: 651484272}
+  minTracksInFrontOfPlayer: 5
+  initialTrackCount: 1
+  minDistanceToConsiderInsideTrack: 5
+  wavesForReward: 10
+  Tracks:
+  - {fileID: 2481401009570368815, guid: c07a6d1ba50b11c41908b2a369b471b8, type: 3}
+  - {fileID: 233810018805884496, guid: cc4d6c20c7d517740b3a97d9ca49da51, type: 3}
+  - {fileID: 7945689546542227116, guid: 69c88ec7937b3114b98bcea883f35182, type: 3}
 --- !u!4 &803229469
 Transform:
   m_ObjectHideFlags: 0
