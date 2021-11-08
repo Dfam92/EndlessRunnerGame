@@ -98,8 +98,8 @@ public class EndlessTrackGenerator : MonoBehaviour
     private TrackSegment SpawnTrackSegment(TrackSegment previousTrack)
     {
         TrackSegment trackInstance = rewardCount < wavesForReward
-            ? Instantiate(Tracks[Random.Range(0, 2)], transform)
-            : Instantiate(Tracks[2], transform);
+            ? Instantiate(Tracks[Random.Range(0, 3)], transform)
+            : Instantiate(Tracks[3], transform);
         // posiciona o track no fim do previous track
 
         if (previousTrack != null)

@@ -286,6 +286,7 @@ MonoBehaviour:
   Tracks:
   - {fileID: 2481401009570368815, guid: c07a6d1ba50b11c41908b2a369b471b8, type: 3}
   - {fileID: 233810018805884496, guid: cc4d6c20c7d517740b3a97d9ca49da51, type: 3}
+  - {fileID: 2481401009570368815, guid: c07a6d1ba50b11c41908b2a369b471b8, type: 3}
   - {fileID: 7945689546542227116, guid: 69c88ec7937b3114b98bcea883f35182, type: 3}
 --- !u!4 &803229469
 Transform:
