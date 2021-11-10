@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Obstacles : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private DecorationSpawner[] decorationSpawners;
 
-    // Update is called once per frame
-    void Update()
+    public void SpawnDecorations()
     {
-        
+        foreach(var decorationSpawner in decorationSpawners)
+        {
+            decorationSpawner.SpawnDecorations();
+        }
     }
 }

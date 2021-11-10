@@ -6,8 +6,14 @@ public class ObstacleGenerator : MonoBehaviour
 {
     [SerializeField] private Obstacles[] obstaclesPrefabs;
 
-    private void Start()
+    private Obstacles currentObstacle;
+
+    public void SpawnObstacle()
     {
-        Instantiate(obstaclesPrefabs[Random.Range(0,obstaclesPrefabs.Length)], transform);
+        Obstacles prefab = obstaclesPrefabs[Random.Range(0, obstaclesPrefabs.Length)];
+        currentObstacle = Instantiate(prefab, transform);
+        currentObstacle.transform.localPosition = Vector3.zero;
+        currentObstacle.transform.rotation = Quaternion.identity;
+        currentObstacle.SpawnDecorations();
     }
 }

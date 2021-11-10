@@ -8,6 +8,8 @@ public class EndlessTrackGenerator : MonoBehaviour
 
     [SerializeField] private PlayerController player;
 
+    [SerializeField] private ObstacleGenerator obstacles;
+
     [Header("Endless Generation Parameters")]
     [Space]
 
@@ -110,6 +112,14 @@ public class EndlessTrackGenerator : MonoBehaviour
         {
             trackInstance.transform.localPosition = Vector3.zero;
         }
+
+        foreach (var obstacleSpawner in trackInstance.ObstacleGenerator)
+        {
+            obstacleSpawner.SpawnObstacle();
+        }
+
+        trackInstance.DecorationSpawner.SpawnDecoratiron();
+
         currentSegments.Add(trackInstance);
         return trackInstance;
     }

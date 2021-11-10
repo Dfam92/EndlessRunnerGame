@@ -259,6 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   start: {fileID: 0}
   end: {fileID: 0}
+  decoratrionSpawner: {fileID: 0}
 --- !u!114 &803229468
 MonoBehaviour:
   m_ObjectHideFlags: 0
