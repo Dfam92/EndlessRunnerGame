@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class JumpAnimationState : StateMachineBehaviour
 {
-    //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        // olha a duracao de animacao do pulo
+        //olha a duracao da animacao de pulo 
         AnimatorClipInfo[] clips = animator.GetNextAnimatorClipInfo(layerIndex);
-        if(clips.Length > 0)
+        if (clips.Length > 0)
         {
             AnimatorClipInfo jumpClipInfo = clips[0];
-            // olha a duracao do pulo do gameplay
+            //olha a duracao do pulo do gameplay
+            //TODO: Assumindo que o PlayerController esta no objeto pai. Resolver isso.
             PlayerController player = animator.transform.parent.GetComponent<PlayerController>();
-            //setar o JumpMultiplier para que a duracao final da animacao de pulo seja = a duracao do pulo no game
-            float jumpMultiplier = jumpClipInfo.clip.length / player.JumpDuration;
-            animator.SetFloat(PlayerAnimationConstants.JumpMultiplier,jumpMultiplier);
+
+            //setar o JumpMultiplier para que a duracao final da animacao de pulo seja = a duracao do pulo no gameplay
+            float multiplier = jumpClipInfo.clip.length / player.JumpDuration;
+            animator.SetFloat(PlayerAnimationConstants.JumpMultiplier, multiplier);
         }
-
     }
-
 }
