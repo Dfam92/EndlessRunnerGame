@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5473261710550771339}
   - component: {fileID: 5473261710550771336}
   - component: {fileID: 3490472212628903674}
+  - component: {fileID: 6345372795580454514}
   m_Layer: 0
   m_Name: GameMode
   m_TagString: Untagged
@@ -45,6 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reloadGameDelay: 3
+  player: {fileID: 0}
+  travelledDistance: {fileID: 0}
+  scoreText: {fileID: 0}
 --- !u!114 &3490472212628903674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,3 +62,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curveStrength: 0.005
+--- !u!114 &6345372795580454514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5473261710550771337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c7557b8b5d722499a37fb7b40bf77d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainHud: {fileID: 0}
+  PauseHud: {fileID: 0}
