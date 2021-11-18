@@ -6,8 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float horizontalSpeed = 15;
     [SerializeField] private float forwardSpeed = 10;
-
     [SerializeField] private float laneDistanceX = 4;
+
+    [SerializeField] private PlayerAudioController playerAudio;
 
     [Header("Jump")]
     [SerializeField] private float jumpDistanceZ = 5;
@@ -107,6 +108,7 @@ public class PlayerController : MonoBehaviour
         IsJumping = true;
         jumpStartZ = transform.position.z;
         StopRoll();
+        playerAudio.PlayJumpClip();
     }
 
     private void StopJump()
@@ -152,7 +154,7 @@ public class PlayerController : MonoBehaviour
         IsRolling = true;
         regularCollider.enabled = false;
         rollCollider.enabled = true;
-
+        playerAudio.PlayRollClip();
         StopJump();
     }
 
@@ -168,5 +170,6 @@ public class PlayerController : MonoBehaviour
         forwardSpeed = 0;
         StopRoll();
         StopJump();
+        playerAudio.PlayDieClip();
     }
 }

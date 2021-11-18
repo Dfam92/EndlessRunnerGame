@@ -16,13 +16,21 @@ public class GameMode : MonoBehaviour
     [SerializeField] private GameObject MainHud;
     [SerializeField] private GameObject PauseHud;
     [SerializeField] private GameObject StartHud;
+    [SerializeField] private MusicPlayer musicPlayer;
+    [SerializeField] private PlayerAudioController playerAudio;
     private bool startGame;
     public void OnGameOver()
     {
+        musicPlayer.StopMusic();
         StartCoroutine(ReloadGameCoroutine());
+    }
+    private void Awake()
+    {
+        musicPlayer.PlayStartMenuMusic();
     }
     private void Update()
     {
+        
         travelledDistance.text = player.TravelledDistance + "M";
         scoreText.text ="Score: " + player.Score;
         CountDown();
@@ -32,11 +40,13 @@ public class GameMode : MonoBehaviour
         startGame = true;
         StartCoroutine(StartGameCountDown());
         StartHud.SetActive(false);
+        musicPlayer.PlayCountDownClip();
     }
 
     public void PauseGame()
     {
         Time.timeScale = 0;
+        AudioListener.pause = true;
         PauseHud.SetActive(true);
         MainHud.SetActive(false);
     }
@@ -44,6 +54,7 @@ public class GameMode : MonoBehaviour
     public void ResumeGame()
     {
         Time.timeScale = 1;
+        AudioListener.pause = false;
         PauseHud.SetActive(false);
         MainHud.SetActive(true);
     }
@@ -53,12 +64,13 @@ public class GameMode : MonoBehaviour
         if (timeToCountDown > 0 && startGame)
         {
             countDownText.enabled = true;
-            timeToCountDown -= 1 * Time.deltaTime;
+            timeToCountDown -= 1.15f * Time.deltaTime;
             countDownText.text = $"{Mathf.Round(timeToCountDown)}";
         }
         else
         {
             countDownText.enabled = false;
+            
         }
     }
     private IEnumerator ReloadGameCoroutine()
@@ -72,6 +84,9 @@ public class GameMode : MonoBehaviour
         yield return new WaitForSeconds(timeToCountDown);
         playerAnimator.SetTrigger(PlayerAnimationConstants.StartGameTrigger);
         MainHud.SetActive(true);
+        musicPlayer.StopMusic();
+        playerAudio.PlayFinalCountdDown();
+        musicPlayer.PlayMainTrackMusic();
     }
 
 }
