@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WaitGameStartAnimationState : StateMachineBehaviour
@@ -15,5 +13,5 @@ public class WaitGameStartAnimationState : StateMachineBehaviour
         }
     }
 
-    
+    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 }

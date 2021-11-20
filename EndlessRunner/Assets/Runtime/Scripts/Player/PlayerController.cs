@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private PlayerAudioController audioController;
     [SerializeField] private float horizontalSpeed = 15;
     [SerializeField] private float forwardSpeed = 10;
-    [SerializeField] private float laneDistanceX = 4;
 
-    [SerializeField] private PlayerAudioController playerAudio;
+    [SerializeField] private float laneDistanceX = 4;
 
     [Header("Jump")]
     [SerializeField] private float jumpDistanceZ = 5;
@@ -43,11 +41,13 @@ public class PlayerController : MonoBehaviour
     private bool CanJump => !IsJumping;
     private bool CanRoll => !IsRolling;
 
+    //TODO: Move to GameMode
     [SerializeField] private float baseScoreMultiplier = 1;
     private float score;
-
-    public float TravelledDistance => Mathf.Round(Vector3.Distance(transform.position, initialPosition));
     public int Score => Mathf.RoundToInt(score);
+
+    public float TravelledDistance => transform.position.z - initialPosition.z;
+    //
 
     void Awake()
     {
@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
         transform.position = position;
 
+        //TODO: Move to game mode
         score += baseScoreMultiplier * forwardSpeed * Time.deltaTime;
     }
 
@@ -108,7 +109,7 @@ public class PlayerController : MonoBehaviour
         IsJumping = true;
         jumpStartZ = transform.position.z;
         StopRoll();
-        playerAudio.PlayJumpClip();
+        audioController.PlayJumpSound();
     }
 
     private void StopJump()
@@ -154,8 +155,10 @@ public class PlayerController : MonoBehaviour
         IsRolling = true;
         regularCollider.enabled = false;
         rollCollider.enabled = true;
-        playerAudio.PlayRollClip();
+
         StopJump();
+
+        audioController.PlayRollSound();
     }
 
     private void StopRoll()
@@ -170,6 +173,5 @@ public class PlayerController : MonoBehaviour
         forwardSpeed = 0;
         StopRoll();
         StopJump();
-        playerAudio.PlayDieClip();
     }
 }

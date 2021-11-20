@@ -7,8 +7,8 @@ public class MusicPlayer : MonoBehaviour
 {
     [SerializeField] private AudioClip startMenuMusic;
     [SerializeField] private AudioClip mainTrackMusic;
-    [SerializeField] private AudioClip countDownClip;
-    
+
+    [SerializeField] private AudioClip gameOverMusic;
 
     private AudioSource audioSource;
 
@@ -24,17 +24,14 @@ public class MusicPlayer : MonoBehaviour
         PlayMusic(mainTrackMusic);
     }
 
-    public void PlayCountDownClip()
+    public void PlayGameOverMusic()
     {
-        PlayMusic(countDownClip);
+        PlayMusic(gameOverMusic);
     }
 
-    
-    public void PlayMusic(AudioClip clip)
+    private void PlayMusic(AudioClip clip)
     {
-        AudioSource.clip = clip;
-        AudioSource.loop = true;
-        AudioSource.Play();
+        AudioUtility.PlayMusic(AudioSource, clip);
     }
 
     public void StopMusic()

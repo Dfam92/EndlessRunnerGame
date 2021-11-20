@@ -1,92 +1,66 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
 
 public class GameMode : MonoBehaviour
 {
-    [SerializeField] private float reloadGameDelay = 3;
-    [SerializeField] private PlayerController player;
-    [SerializeField] private TextMeshProUGUI travelledDistance;
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI countDownText;
-    [SerializeField] float timeToCountDown;
-    [SerializeField] private Animator playerAnimator;
-    [SerializeField] private GameObject MainHud;
-    [SerializeField] private GameObject PauseHud;
-    [SerializeField] private GameObject StartHud;
+    [SerializeField] PlayerController player;
+    [SerializeField] PlayerAnimationController playerAnimationController;
+
+    [SerializeField] private MainHUD mainHud;
+
     [SerializeField] private MusicPlayer musicPlayer;
-    [SerializeField] private PlayerAudioController playerAudio;
-    private bool startGame;
-    public void OnGameOver()
-    {
-        musicPlayer.StopMusic();
-        StartCoroutine(ReloadGameCoroutine());
-    }
+    [SerializeField] private float reloadGameDelay = 3;
+
+
+    [SerializeField]
+    [Range(0, 5)]
+    private int startGameCountdown = 5;
+
     private void Awake()
     {
+        SetWaitForStartGameState();
+    }
+
+    private void SetWaitForStartGameState()
+    {
+        player.enabled = false;
+        mainHud.ShowStartGameOverlay();
         musicPlayer.PlayStartMenuMusic();
     }
-    private void Update()
+
+    public void OnGameOver()
     {
-        
-        travelledDistance.text = player.TravelledDistance + "M";
-        scoreText.text ="Score: " + player.Score;
-        CountDown();
+        StartCoroutine(ReloadGameCoroutine());
     }
+
+    private IEnumerator ReloadGameCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+        musicPlayer.PlayGameOverMusic();
+        yield return new WaitForSeconds(reloadGameDelay);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void StartGame()
     {
-        startGame = true;
-        StartCoroutine(StartGameCountDown());
-        StartHud.SetActive(false);
-        musicPlayer.PlayCountDownClip();
+        StartCoroutine(StartGameCor());
     }
 
     public void PauseGame()
     {
         Time.timeScale = 0;
-        AudioListener.pause = true;
-        PauseHud.SetActive(true);
-        MainHud.SetActive(false);
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
-        AudioListener.pause = false;
-        PauseHud.SetActive(false);
-        MainHud.SetActive(true);
     }
 
-    private void CountDown()
+    private IEnumerator StartGameCor()
     {
-        if (timeToCountDown > 0 && startGame)
-        {
-            countDownText.enabled = true;
-            timeToCountDown -= 1.15f * Time.deltaTime;
-            countDownText.text = $"{Mathf.Round(timeToCountDown)}";
-        }
-        else
-        {
-            countDownText.enabled = false;
-            
-        }
-    }
-    private IEnumerator ReloadGameCoroutine()
-    {
-        //esperar uma frame
-        yield return new WaitForSeconds(reloadGameDelay);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    private IEnumerator StartGameCountDown()
-    {
-        yield return new WaitForSeconds(timeToCountDown);
-        playerAnimator.SetTrigger(PlayerAnimationConstants.StartGameTrigger);
-        MainHud.SetActive(true);
-        musicPlayer.StopMusic();
-        playerAudio.PlayFinalCountdDown();
         musicPlayer.PlayMainTrackMusic();
+        yield return StartCoroutine(mainHud.PlayStartGameCountdown(startGameCountdown));
+        playerAnimationController.PlayStartGameAnimation();
     }
-
 }

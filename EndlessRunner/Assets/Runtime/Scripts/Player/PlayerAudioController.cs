@@ -1,46 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 [RequireComponent(typeof(AudioSource))]
 public class PlayerAudioController : MonoBehaviour
 {
-    [SerializeField] private AudioClip jumpClip;
-    [SerializeField] private AudioClip rollClip;
-    [SerializeField] private AudioClip dieClip;
-    [SerializeField] private AudioClip clipButton;
-    [SerializeField] private AudioClip countDownEnd;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip rollSound;
+
+    [SerializeField] private AudioClip deathSound;
     private AudioSource audioSource;
 
     private AudioSource AudioSource => audioSource == null ? audioSource = GetComponent<AudioSource>() : audioSource;
 
-    public void PlayJumpClip()
+    public void PlayJumpSound()
     {
-        Play(jumpClip);
+        Play(jumpSound);
     }
 
-    public void PlayRollClip()
+    public void PlayRollSound()
     {
-        Play(rollClip);
+        Play(rollSound);
     }
 
-    public void PlayDieClip()
+    public void PlayDeathSound()
     {
-        Play(dieClip);
+        Play(deathSound);
     }
 
-    public void PlayClipButton()
-    {
-        Play(clipButton);
-    }
-
-    public void PlayFinalCountdDown()
-    {
-        Play(countDownEnd);
-    }
     private void Play(AudioClip clip)
     {
-        AudioSource.clip = clip;
-        AudioSource.loop = false;
-        AudioSource.Play();
+        AudioUtility.PlayAudioCue(AudioSource, clip);
     }
 }
