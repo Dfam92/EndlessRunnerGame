@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerAudioController audioController;
     [SerializeField] private float horizontalSpeed = 15;
     [SerializeField] private float forwardSpeed = 10;
+    public float ForwardSpeed => forwardSpeed;
+   
 
     [SerializeField] private float laneDistanceX = 4;
 
@@ -24,6 +26,8 @@ public class PlayerController : MonoBehaviour
     Vector3 initialPosition;
 
     float targetPositionX;
+    [SerializeField] float initialDifficulty = 1;
+    [SerializeField] int metersForIncreaseDifficulty;
 
     public bool IsJumping { get; private set; }
 
@@ -41,11 +45,7 @@ public class PlayerController : MonoBehaviour
     private bool CanJump => !IsJumping;
     private bool CanRoll => !IsRolling;
 
-    //TODO: Move to GameMode
-    [SerializeField] private float baseScoreMultiplier = 1;
-    private float score;
-    public int Score => Mathf.RoundToInt(score);
-
+   
     public float TravelledDistance => transform.position.z - initialPosition.z;
     //
 
@@ -57,8 +57,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        
         ProcessInput();
-
+        
         Vector3 position = transform.position;
 
         position.x = ProcessLaneMovement();
@@ -69,9 +70,12 @@ public class PlayerController : MonoBehaviour
         transform.position = position;
 
         //TODO: Move to game mode
-        score += baseScoreMultiplier * forwardSpeed * Time.deltaTime;
+        
     }
-
+    private void FixedUpdate()
+    {
+        IncreaseDifficulty();
+    }
     private void ProcessInput()
     {
         if (Input.GetKeyDown(KeyCode.D))
@@ -101,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
     private float ProcessForwardMovement()
     {
-        return transform.position.z + forwardSpeed * Time.deltaTime;
+        return transform.position.z + forwardSpeed * Time.deltaTime * initialDifficulty;
     }
 
     private void StartJump()
@@ -167,10 +171,19 @@ public class PlayerController : MonoBehaviour
         regularCollider.enabled = true;
         rollCollider.enabled = false;
     }
-
+    public void IncreaseDifficulty()
+    {
+        int metersForIncreaseSpeed = Mathf.RoundToInt(TravelledDistance);
+        if (metersForIncreaseSpeed % metersForIncreaseDifficulty == 0 && metersForIncreaseSpeed > 0)
+        {
+            initialDifficulty += 0.01f;
+            
+        }
+    }
     public void Die()
     {
         forwardSpeed = 0;
+        horizontalSpeed = 0;
         StopRoll();
         StopJump();
     }

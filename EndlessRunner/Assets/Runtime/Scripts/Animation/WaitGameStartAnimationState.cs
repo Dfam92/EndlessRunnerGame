@@ -6,11 +6,11 @@ public class WaitGameStartAnimationState : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         //TODO: Remover o assumption de que o player eh sempre o pai do animator
-        PlayerController player = animator.transform.parent.GetComponent<PlayerController>();
+       /* PlayerController player = animator.transform.parent.GetComponent<PlayerController>();
         if (player != null)
         {
             player.enabled = false;
-        }
+        }*/
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

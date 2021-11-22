@@ -4,6 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class GameMode : MonoBehaviour
 {
+    [SerializeField] private float baseScoreMultiplier = 1;
+    private float score;
+    public int Score => Mathf.RoundToInt(score);
+
     [SerializeField] PlayerController player;
     [SerializeField] PlayerAnimationController playerAnimationController;
 
@@ -16,12 +20,15 @@ public class GameMode : MonoBehaviour
     [SerializeField]
     [Range(0, 5)]
     private int startGameCountdown = 5;
-
+    private bool startGame;
     private void Awake()
     {
         SetWaitForStartGameState();
     }
-
+    private void Update()
+    {
+        UpdateScore();
+    }
     private void SetWaitForStartGameState()
     {
         player.enabled = false;
@@ -32,6 +39,7 @@ public class GameMode : MonoBehaviour
     public void OnGameOver()
     {
         StartCoroutine(ReloadGameCoroutine());
+        
     }
 
     private IEnumerator ReloadGameCoroutine()
@@ -45,6 +53,7 @@ public class GameMode : MonoBehaviour
     public void StartGame()
     {
         StartCoroutine(StartGameCor());
+       
     }
 
     public void PauseGame()
@@ -57,10 +66,21 @@ public class GameMode : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    private void UpdateScore()
+    {
+        if(startGame)
+        {
+            score += baseScoreMultiplier * player.ForwardSpeed * Time.deltaTime;
+        }
+    }
+        
+   
     private IEnumerator StartGameCor()
     {
         musicPlayer.PlayMainTrackMusic();
         yield return StartCoroutine(mainHud.PlayStartGameCountdown(startGameCountdown));
         playerAnimationController.PlayStartGameAnimation();
+        startGame = true;
+        player.enabled = true;
     }
 }
