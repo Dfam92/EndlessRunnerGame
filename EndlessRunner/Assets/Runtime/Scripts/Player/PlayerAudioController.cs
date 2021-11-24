@@ -7,6 +7,7 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] private AudioClip rollSound;
 
     [SerializeField] private AudioClip deathSound;
+    [SerializeField] private AudioClip coinSound;
     private AudioSource audioSource;
 
     private AudioSource AudioSource => audioSource == null ? audioSource = GetComponent<AudioSource>() : audioSource;
@@ -26,6 +27,10 @@ public class PlayerAudioController : MonoBehaviour
         Play(deathSound);
     }
 
+    public void PlayPickCoin()
+    {
+        Play(coinSound);
+    }
     private void Play(AudioClip clip)
     {
         AudioUtility.PlayAudioCue(AudioSource, clip);

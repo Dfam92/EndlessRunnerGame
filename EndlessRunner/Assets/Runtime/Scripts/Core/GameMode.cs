@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using TMPro;
 public class GameMode : MonoBehaviour
 {
     [SerializeField] private float baseScoreMultiplier = 1;
@@ -12,7 +12,7 @@ public class GameMode : MonoBehaviour
     [SerializeField] PlayerAnimationController playerAnimationController;
 
     [SerializeField] private MainHUD mainHud;
-
+    [SerializeField] private TextMeshProUGUI coinCountText;
     [SerializeField] private MusicPlayer musicPlayer;
     [SerializeField] private float reloadGameDelay = 3;
 
@@ -21,6 +21,8 @@ public class GameMode : MonoBehaviour
     [Range(0, 5)]
     private int startGameCountdown = 5;
     private bool startGame;
+    private int totalCoins;
+
     private void Awake()
     {
         SetWaitForStartGameState();
@@ -72,6 +74,12 @@ public class GameMode : MonoBehaviour
         {
             score += baseScoreMultiplier * player.ForwardSpeed * Time.deltaTime;
         }
+    }
+
+    public void UpdateCoins(int coins)
+    {
+        totalCoins += coins;
+        coinCountText.text = " " + totalCoins ;
     }
         
    

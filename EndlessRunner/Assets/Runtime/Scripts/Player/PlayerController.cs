@@ -6,8 +6,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float horizontalSpeed = 15;
     [SerializeField] private float forwardSpeed = 10;
     public float ForwardSpeed => forwardSpeed;
-   
 
+    [SerializeField] private PowerUps powerUps;
+    [SerializeField] private GameMode gameMode;
     [SerializeField] private float laneDistanceX = 4;
 
     [Header("Jump")]
@@ -186,5 +187,12 @@ public class PlayerController : MonoBehaviour
         horizontalSpeed = 0;
         StopRoll();
         StopJump();
+    }
+
+    private void OnTriggerEnter(Collider powerUps)
+    {
+        audioController.PlayPickCoin();
+        gameMode.UpdateCoins(1);
+        
     }
 }
