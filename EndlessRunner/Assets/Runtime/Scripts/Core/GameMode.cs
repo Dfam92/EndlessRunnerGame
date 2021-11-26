@@ -8,8 +8,11 @@ public class GameMode : MonoBehaviour
     private float score;
     public int Score => Mathf.RoundToInt(score);
 
+    
+
     [SerializeField] PlayerController player;
     [SerializeField] PlayerAnimationController playerAnimationController;
+    [SerializeField] PlayerData playerData;
 
     [SerializeField] private MainHUD mainHud;
     [SerializeField] private TextMeshProUGUI coinCountText;
@@ -22,6 +25,7 @@ public class GameMode : MonoBehaviour
     private int startGameCountdown = 5;
     private bool startGame;
     private int totalCoins;
+    public int TotalCoins { get => totalCoins; set => totalCoins = value; }
 
     private void Awake()
     {
@@ -34,14 +38,15 @@ public class GameMode : MonoBehaviour
     private void SetWaitForStartGameState()
     {
         player.enabled = false;
+        playerData.LoadStates();
         mainHud.ShowStartGameOverlay();
         musicPlayer.PlayStartMenuMusic();
     }
 
     public void OnGameOver()
     {
+        playerData.SaveStates();
         StartCoroutine(ReloadGameCoroutine());
-        
     }
 
     private IEnumerator ReloadGameCoroutine()
@@ -78,8 +83,8 @@ public class GameMode : MonoBehaviour
 
     public void UpdateCoins(int coins)
     {
-        totalCoins += coins;
-        coinCountText.text = " " + totalCoins ;
+        TotalCoins += coins;
+        coinCountText.text = " " + TotalCoins ;
     }
         
    
