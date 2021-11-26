@@ -34,6 +34,7 @@ public class MusicPlayer : MonoBehaviour
         AudioUtility.PlayMusic(AudioSource, clip);
     }
 
+
     public void StopMusic()
     {
         AudioSource.Stop();
